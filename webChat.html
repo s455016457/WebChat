@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/icon.css" />
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" href="Css/webChat.css" />
+    <link rel="stylesheet" href="Css/chatNav.css" />
+    <link rel="stylesheet" href="Css/chatPanel.css" />
+
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.easyui.min.js"></script>
+
+    <script type="text/javascript" src="/JavaScripts/Knockout.3.5.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/MenuItem.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatPanel.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatBadge.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatNav.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ArrayExtend.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatPanelComponent.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/WebChat.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="background-color: #2f3640;padding:10px; height: 60px;display: flex;">
+        <span class="web-chat"></span>
+    </div>
+
+    <script type="text/javascript ">
+        $(function() {
+
+
+            function createMessage(data) {
+                return new function() {
+                    this.sendBy = data.sendBy;
+                    this.sendUserName = data.sendUserName;
+                    this.messageType = data.messageType; // me or peer
+                    this.messageStatus = ko.observable(data.messageStatus || "Sending"); // 0 Sending 发送中   -1 SendFailed 发送失败   1 Sended 发送成功  2 Readed 已阅读
+                    this.messageDateTime = data.messageDateTime;
+                    this.message = data.message;
+                    this.receiverUuserId = data.receiverUuserId;
+                    this.receiverUuserName = data.receiverUuserName;
+                    this.messageStatusDescr = ko.computed(function() {
+                        switch (this.messageStatus()) {
+                            case "Sending":
+                            case 0:
+                                return "发送中";
+                            case "SendFailed":
+                            case -1:
+                                return "发送失败";
+                            case "Sended":
+                            case 1:
+                                return "发送成功";
+                            case "Readed":
+                            case 2:
+                                return "已阅读";
+                        }
+                    }, this);
+
+                    this.sended = function() {
+                        this.messageStatus("Sended");
+                    };
+                    this.sendFailed = function() {
+                        this.messageStatus("SendFailed");
+                    };
+                    this.readed = function() {
+                        this.messageStatus("Readed");
+                    };
+
+                    this.toJson = function() {
+                        return {
+                            messageType: this.messageType,
+                            messageStatus: this.messageStatus(),
+                            messageDateTime: this.messageDateTime,
+                            message: this.message
+                        };
+                    };
+                };
+            }
+
+            var users = [{
+                userId: "1",
+                userName: "test1",
+                group: "gp1",
+                image: "",
+                badgeValue: 2,
+                history: {
+                    message: "是劳动法我莱克斯顿金佛山"
+                },
+            }, {
+                userId: "2",
+                userName: "test2",
+                group: "gp1",
+                image: "",
+                badgeValue: 3,
+                history: {
+                    message: "是劳动法我莱克斯水电费问顿金佛山"
+                },
+            }, {
+                userId: "3",
+                userName: "test3",
+                group: "gp2",
+                image: "",
+                badgeValue: 0,
+                history: {
+                    message: "是劳动法我水电费问莱克斯顿金佛山"
+                },
+            }, {
+                userId: "4",
+                userName: "test4",
+                group: "gp2",
+                image: "",
+                badgeValue: 0,
+                history: {
+                    message: "是劳动法我莱克斯顿金佛山123"
+                },
+            }, {
+                userId: "5",
+                userName: "test5",
+                group: "",
+                image: "",
+                badgeValue: 2,
+                history: {
+                    message: "是劳动法我莱克斯顿金佛山5"
+                },
+            }];
+
+            var titleButtons = [{
+                icon: "icon-chat",
+                panelType: "chatMessage",
+                name: "message",
+                title: "信息",
+                badge: 10
+            }, {
+                icon: "icon-user",
+                name: "users",
+                panelType: "users",
+                title: "联系人",
+                badge: 20
+            }, {
+                icon: "icon-cloudFile",
+                panelType: "cloudFile",
+                name: "cloudFile",
+                title: "云文件",
+                badge: 31
+            }];
+
+            /**
+             * 
+                    this.sendBy = data.sendBy;
+                    this.sendUserName = data.sendUserName;
+                    this.messageType = data.messageType; // me or peer
+                    this.messageStatus = ko.observable(data.messageStatus || "Sending"); // 0 Sending 发送中   -1 SendFailed 发送失败   1 Sended 发送成功  2 Readed 已阅读
+                    this.messageDateTime = data.messageDateTime;
+                    this.message = data.message;
+                    this.receiverUuserId = data.receiverUuserId;
+                    this.receiverUuserName = data.receiverUuserName;
+             * */
+
+            var viewModel = $.fn.webChat.CreateViewModel({
+                userId: "877",
+                userName: "马六",
+                headImg: "Css/Images/PNG-0985.png",
+                chatMessages: [{
+                    sendBy: "2",
+                    sendUserName: "test2",
+                    messageType: "peer",
+                    messageStatus: 1,
+                    messageDateTime: Date.now(),
+                    message: "哈哈哈",
+                    receiverUuserId: "877",
+                    receiverUuserName: "马六"
+                }],
+                users: users,
+                titleButtons: titleButtons
+            });
+
+            $(".web-chat").webChat({
+                viewModel: viewModel
+            });
+
+            console.log(viewModel);
+        });
+    </script>
+
+</body>
+
+</html>

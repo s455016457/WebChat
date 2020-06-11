@@ -1,0 +1,108 @@
+.chat-window-title {
+    background-color: #34495e;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+.chat-window-title-left {
+    align-self: center;
+}
+
+.chat-window-title-right {
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.chat-window-title-right .btn {
+    display: inline-block;
+    margin: 5px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.chat-window-title-right .btn:hover {
+    background-color: #353b48;
+}
+
+.chat-window-title-buttons {
+    flex-grow: 99;
+    height: 100%;
+    align-self: flex-end;
+}
+
+.chat-window-title-right {
+    align-self: center;
+}
+
+.chat-window-menu {
+    background-color: #718093;
+    width: 100%;
+    height: 100%;
+}
+
+.chat-window-icon-button {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.chat-window-icon-button:hover {
+    width: 28px;
+    height: 28px;
+}
+
+.chat-window-icon-button-badge {
+    display: block;
+    padding: 0.001em 0.45em;
+    background-color: red;
+    color: #ecf0f1;
+    align-self: flex-start;
+    justify-self: self-end;
+    font-size: 15%;
+    border-radius: 35%;
+    grid-column: 1;
+    grid-row: 1/1;
+    transition: .35s;
+}
+
+.chat-window-center-panel {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.chat-window-center-panel-selected {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.icon-webchat {
+    background: url('/Css/Images/webchat.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-btn-max {
+    background: url('/Css/Images/max.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-btn-min {
+    background: url('/Css/Images/mini.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-btn-reset {
+    background: url('/Css/Images/reset.png') no-repeat center center;
+    background-size: contain;
+}

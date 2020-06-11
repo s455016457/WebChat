@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/JavaScripts/Knockout.3.5.js"></script>
+    <title>Document</title>
+    <style>
+        .tab-nav {
+            padding: 5px 5px 0px 5px;
+            border-bottom: solid 1px #95a5a6;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .tab-nav .tab-button {
+            display: inline-block;
+            padding: 3px 5px;
+            cursor: pointer;
+            font-size: smaller;
+            transform: 2.5s;
+            border-radius: 10% 10% 0% 0%;
+            border-top: solid 1px white;
+            border-left: solid 1px white;
+            border-right: solid 1px white;
+            margin-bottom: 0px;
+            background-color: white;
+            width: auto;
+        }
+        
+        .tab-nav .tab-button a {
+            height: calc(100% - 6px - 4px);
+            width: calc(60px - 6px - 4px);
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        .tab-nav .tab-button:hover {
+            border-radius: 10% 10% 0% 0%;
+            border-top: solid 1px #bdc3c7;
+            border-left: solid 1px #bdc3c7;
+            border-right: solid 1px #bdc3c7;
+        }
+        
+        .tab-nav .tab-button-selected {
+            border-radius: 10% 10% 0% 0%;
+            border-top: solid 1px #95a5a6;
+            border-left: solid 1px #95a5a6;
+            border-right: solid 1px #95a5a6;
+            margin-bottom: -1px;
+        }
+        
+        .tab-body {
+            height: calc(100% - 40px);
+            padding: 5px;
+            display: none;
+        }
+        
+        .tab-body-selected {
+            display: block;
+        }
+        
+        .icon-qq {
+            background: url('/Css/Images/PNG-0015.png') no-repeat center center;
+            background-size: contain;
+        }
+        
+        .icon-2 {
+            background: url('/Css/Images/PNG-0981.png') no-repeat center center;
+            background-size: contain;
+        }
+        
+        .icon-3 {
+            background: url('/Css/Images/PNG-0985.png') no-repeat center center;
+            background-size: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 800px;height: 600px; border:solid 1px blue">
+        <div style="width:100%;height:100%;border:solid 1px red">
+            <div data-bind="foreach:navItems" class="tab-nav">
+                <span data-bind="class:className ,attr:{title:title,name:name} ,click:selected">
+                    <a data-bind="class:icon"></a>
+                </span>
+                <!-- <span class="tab-button tab-button-selected" title="tab1" name="tab1">
+                    <img src="/Css/Images/png-0015.png"/>
+                </span>
+                <span class="tab-button" title="tab2" name="tab2">
+                    <img src="/Css/Images/PNG-0981.png"/>
+                </span>
+                <span class="tab-button" title="tab3" name="tab3">
+                    <img src="/Css/Images/PNG-0985.png"/>
+                </span> -->
+            </div>
+            <div data-bind="foreach:navItems">
+                <div data-bind="class:bodyClassName ,attr:{name:name} ,text:bodyText">标签2 的内容</div>
+            </div>
+            <!-- <div class="tab-body tab-body-selected" name="tab1">标签1 的内容</div>
+            <div class="tab-body" name="tab2">标签2 的内容</div>
+            <div class="tab-body" name="tab3">标签3 的内容</div> -->
+        </div>
+    </div>
+
+    <script text="text/javascript">
+        $(function() {
+            var viewModel = new function() {
+                var self = this;
+                this.selectdItem = ko.observable("");
+                this.navItems = ko.observableArray([]);
+
+                this.createItem = function(data) {
+                    return new function() {
+                        this.icon = data.icon;
+                        this.name = data.name;
+                        this.title = data.title;
+
+                        this.className = ko.pureComputed(function() {
+                            return "tab-button" + ((this.name === self.selectdItem()) ? " tab-button-selected" : " ");
+                        }, this);
+
+                        this.bodyClassName = ko.pureComputed(function() {
+                            return "tab-body" + ((this.name === self.selectdItem()) ? " tab-body-selected" : " ");
+                        }, this);
+
+                        this.bodyText = ko.pureComputed(function() {
+                            return "标签" + this.name + " 的内容";
+                        }, this);
+
+                        this.selected = function() {
+                            self.selectdItem(this.name);
+                        }
+                    }
+                };
+
+                this.loadData = function(data) {
+                    self.navItems.removeAll();
+                    $(data).each(function(index) {
+                        if (index === 0 && !self.selectdItem())
+                            self.selectdItem(this.name);
+                        self.navItems.push(self.createItem(this));
+                    });
+                };
+
+                this.addNewItem = function(data) {
+                    self.navItems.push(self.createItem(data));
+                }
+            }
+
+            viewModel.loadData([{
+                icon: "icon-qq",
+                name: "tab1",
+                title: "标签1"
+            }, {
+                icon: "icon-2",
+                name: "tab2",
+                title: "标签2"
+            }, {
+                icon: "icon-3",
+                name: "tab3",
+                title: "标签2"
+            }]);
+
+            ko.applyBindings(viewModel, $("body")[0]);
+        });
+    </script>
+</body>
+
+</html>

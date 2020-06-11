@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/icon.css" />
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" href="Css/webChat.css" />
+    <link rel="stylesheet" href="Css/chatNav.css" />
+    <link rel="stylesheet" href="css/chatWindow.css">
+
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.easyui.min.js"></script>
+
+    <script type="text/javascript" src="/JavaScripts/Knockout.3.5.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/MenuItem.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatPanel.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatBadge.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatNav.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/chatWindow.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="background-color: #2f3640;padding:10px; height: 60px;display: flex;">
+        <span class="icon-webchat chat-window-icon-button"></span>
+        <span class="chat-window"></span>
+    </div>
+    <div id="chatWin1">
+        <div class="easyui-layout" data-options="fit:true,border:false">
+            <div style="height: 80px;" data-options="region:'north',border:false">
+                <div class="chat-window-title">
+                    <div class="chat-window-title-left"></div>
+                    <div class="chat-window-title-buttons"></div>
+                    <div class="chat-window-title-right">
+                        <a class="btn icon-btn-max"></a>
+                        <a class="btn icon-btn-min"></a>
+                    </div>
+                </div>
+            </div>
+            <div data-options="region:'center',border:false">
+                <div class="chat-window-center-panel chat-window-center-panel-selected" name="panel1">
+                    <div class="easyui-layout" data-options="fit:true,border:false">
+                        <div style="width: 200px;" data-options="region:'west',border:false">
+                            <div class="chat-window-menu"></div>
+                        </div>
+                        <div data-options="region:'center',border:false">
+                            这里是面板1
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-window-center-panel" name="panel2">
+                    <div class="easyui-layout" data-options="fit:true,border:false">
+                        <div style="width: 200px;" data-options="region:'west',border:false">
+                            <div class="chat-window-menu"></div>
+                        </div>
+                        <div data-options="region:'center',border:false">
+                            这里是面板2
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-window-center-panel" name="panel3 ">
+                    <div class="easyui-layout " data-options="fit:true,border:false ">
+                        <div style="width: 200px; " data-options="region: 'west',border:false ">
+                            <div class="chat-window-menu "></div>
+                        </div>
+                        <div data-options="region: 'center',border:false ">
+                            这里是面板3
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript ">
+        $(function() {
+            var data = [{
+                icon: "icon-chat",
+                name: "tab1",
+                title: "信息",
+                badge: 10
+            }, {
+                icon: "icon-user",
+                name: "tab2",
+                title: "联系人",
+                badge: 15
+            }, {
+                icon: "icon-cloudFile",
+                name: "tab3",
+                title: "云文件",
+                badge: 9
+            }];
+
+            $(".chat-window-icon-button").on("click", function(event) {
+                $("#chatWin1 ").window("open");
+            });
+
+            $("#chatWin1 ").window({
+                title: '',
+                border: false,
+                width: 800,
+                height: 600,
+                closed: true
+            });
+
+            $(".chat-window-title-buttons").webChatChatNav({
+                data: data
+            });
+
+            $(".chat-window").webChatChatWindow({
+                titleButtons: data
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+.webChat-chatPanel-title {
+    font-size: large;
+    font-family: cursive;
+    height: 55px;
+}
+
+.webChat-chatPanel-title span {
+    padding: 10px 10px 0px 10px;
+    display: block;
+}
+
+.webChat-chatpanel-message-body a {
+    text-decoration: none;
+    font-size: smaller;
+    outline: none;
+    resize: none;
+    color: #2f3640;
+}
+
+.webChat-chatPanel-messagebox {
+    display: grid;
+    grid-template-columns: 40px auto 40px;
+    align-items: center
+}
+
+.webChat-chatPanel-messagebox-headimg {
+    width: 40px;
+    height: 40px;
+    border: none
+}
+
+.webChat-chatPanel-messagebox-text {
+    margin: 5px;
+    padding: 4px;
+    border: solid 1px #3498db;
+    background-color: #3498db;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.webchat-chatPanel-sendmessage-textbox {
+    display: inline-flex;
+    height: calc(100% - 2px);
+    width: inherit;
+    /* padding: 4px 0px 4px 4px; */
+    align-items: center;
+    border: solid 1px #353b48;
+    border-radius: 5px;
+}
+
+.webchat-chatPanel-sendmessage-textbox textarea {
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 4px;
+    border-radius: 6px;
+    font-size: smaller;
+    outline: none;
+    resize: none;
+}
+
+.webchat-chatPanel-sendmessage-textbox a {
+    height: 100%;
+    width: 60px;
+    text-decoration: none;
+    color: #2f3640;
+    border-left: solid 1px #353b48;
+    background-color: #dfe6e9;
+    border-radius: 0px 6px 6px 0px;
+    transition: .15s;
+}
+
+.webchat-chatPanel-sendmessage-textbox a span {
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px 6px 6px 0px;
+    transition: .15s;
+}
+
+.webchat-chatPanel-sendmessage-textbox a :hover {
+    background-color: #b2bec3;
+}

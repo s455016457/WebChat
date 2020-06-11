@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/icon.css" />
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" href="Css/webChat.css" />
+    <link rel="stylesheet" href="Css/chatPanel.css" />
+
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.easyui.min.js"></script>
+
+    <script type="text/javascript" src="/JavaScripts/Knockout.3.5.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatPanelComponent.js"></script>
+
+</head>
+
+<body>
+    <div class="chat-panel" style="width: 600px;height: 500px;">
+        <webchat-chatpanel style="display: block; width: 100%; height: 100%;" params="value: currentUser"></webchat-chatpanel>
+    </div>
+
+    <script type="text/javascript">
+        $(function() {
+
+            function createMessage(data) {
+                return new function() {
+                    this.messageType = data.messageType; // me or peer
+                    this.messageStatus = ko.observable(data.messageStatus || "Sending"); // 0 Sending 发送中   -1 SendFailed 发送失败   1 Sended 发送成功  2 Readed 已阅读
+                    this.messageDateTime = data.messageDateTime;
+                    this.message = data.message;
+                    this.messageStatusDescr = ko.computed(function() {
+                        switch (this.messageStatus()) {
+                            case "Sending":
+                            case 0:
+                                return "发送中";
+                            case "SendFailed":
+                            case -1:
+                                return "发送失败";
+                            case "Sended":
+                            case 1:
+                                return "发送成功";
+                            case "Readed":
+                            case 2:
+                                return "已阅读";
+                        }
+                    }, this);
+
+                    this.sended = function() {
+                        this.messageStatus("Sended");
+                    };
+                    this.sendFailed = function() {
+                        this.messageStatus("SendFailed");
+                    };
+                    this.readed = function() {
+                        this.messageStatus("Readed");
+                    };
+
+                    this.toJson = function() {
+                        return {
+                            messageType: this.messageType,
+                            messageStatus: this.messageStatus(),
+                            messageDateTime: this.messageDateTime,
+                            message: this.message
+                        };
+                    };
+                };
+            }
+
+            var viewModel = new function() {
+                this.currentUser = new function() {
+                    var me = this;
+                    this.peer = {
+                        guid: "1",
+                        name: "张三",
+                        headImg: 'Css/Images/PNG-0981.png',
+                    };
+                    this.me = {
+                        guid: "2",
+                        name: "李四",
+                        headImg: 'Css/Images/PNG-0985.png',
+                    };
+                    this.chatMessages = ko.observableArray([createMessage({
+                        messageType: "peer",
+                        messageStatus: 1,
+                        messageDateTime: Date.now(),
+                        message: "你好呀"
+                    }), createMessage({
+                        messageType: "peer",
+                        messageStatus: 1,
+                        messageDateTime: Date.now(),
+                        message: "在吗？"
+                    }), createMessage({
+                        messageType: "me",
+                        messageStatus: 1,
+                        messageDateTime: Date.now(),
+                        message: "在的，什么事"
+                    }), createMessage({
+                        messageType: "peer",
+                        messageStatus: 1,
+                        messageDateTime: Date.now(),
+                        message: "没事，就是看你在不在"
+                    }), createMessage({
+                        messageType: "me",
+                        messageStatus: 0,
+                        messageDateTime: Date.now(),
+                        message: "有病"
+                    })]);
+
+                    this.loadHistoryChatMessages = function(data) {
+                        data = data.reverse();
+                        data.forEach(function(item, index, array) {
+                            me.chatMessages.unshift(createMessage(item));
+                        });
+                    }
+
+                    this.onSendMessage = function(data) {
+                        console.log("onSendMessage", data);
+
+                        data = createMessage(data);
+                        me.chatMessages.push(data);
+                        this.centerPanelToBottom();
+                        setTimeout(() => {
+                            data.sended();
+                        }, 1000);
+                    }
+
+                    this.onClickLoadHistoryChatMessages = function() {
+                        console.log("onClickLoadHistoryChatMessages", this);
+                        me.loadHistoryChatMessages([{
+                            messageType: "peer",
+                            messageStatus: 2,
+                            messageDateTime: Date.now(),
+                            message: "历史记录哈哈哈"
+                        }, {
+                            messageType: "me",
+                            messageStatus: 2,
+                            messageDateTime: Date.now(),
+                            message: "历史记录什么鬼"
+                        }, {
+                            messageType: "peer",
+                            messageStatus: 2,
+                            messageDateTime: Date.now(),
+                            message: "历史记录哈哈哈嘿嘿"
+                        }]);
+                    }
+                }
+            };
+
+            ko.applyBindings(viewModel, $(".chat-panel")[0]);
+        });
+    </script>
+</body>
+
+</html>

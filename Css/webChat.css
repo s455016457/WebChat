@@ -1,0 +1,221 @@
+.chat-window-icon-button {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.chat-window-icon-button:hover {
+    width: 28px;
+    height: 28px;
+}
+
+.chat-window-icon-button-badge {
+    display: block;
+    padding: 0.001em 0.45em;
+    background-color: red;
+    color: #ecf0f1;
+    align-self: flex-start;
+    justify-self: self-end;
+    font-size: 15%;
+    border-radius: 35%;
+    grid-column: 1;
+    grid-row: 1/1;
+    transition: .35s;
+}
+
+.chat-window-title {
+    background-color: #34495e;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+.chat-window-title-left {
+    align-self: center;
+}
+
+.chat-window-title-right {
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.chat-window-title-right .btn {
+    display: inline-block;
+    margin: 5px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.chat-window-title-right .btn:hover {
+    background-color: #353b48;
+}
+
+.chat-window-title-buttons {
+    flex-grow: 99;
+    height: 100%;
+    align-self: flex-end;
+}
+
+.chat-window-center-panel {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.chat-window-center-panel-selected {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.chat-window-title-right {
+    align-self: center;
+}
+
+.chat-window-menu {
+    background-color: #dfe6e9;
+    width: 100%;
+    height: 100%;
+}
+
+.chat-window-menu ul {
+    margin: 0px;
+    list-style: none;
+    padding: 0px;
+}
+
+.chat-window-menu ul li {
+    margin: 0px;
+    list-style: none;
+    padding: 0px;
+}
+
+.chat-window-menu-group {
+    /* display: flex; */
+    background-color: #718093;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.chat-window-menu-group :hover {
+    background-color: #636e72;
+    color: #f5f6fa;
+}
+
+.chat-window-menu-group-selected {
+    background-color: #636e72;
+    color: #f5f6fa;
+}
+
+.webChat-menuItem-item {
+    padding: 0px 6px;
+    transition: .15s;
+}
+
+.webChat-menuItem-item div {
+    padding: 0px;
+}
+
+.webChat-menuItem-item:hover {
+    cursor: pointer;
+    background-color: #bdc3c7;
+    color: #f5f6fa;
+}
+
+.webChat-menuItem-item-selected {
+    background-color: #bdc3c7;
+    color: #f5f6fa;
+}
+
+.webChat-menuItem-item-badge {
+    display: block;
+    padding: 0.1em 0.45em;
+    background-color: red;
+    color: #ecf0f1;
+    align-self: flex-start;
+    justify-self: self-start;
+    font-size: 75%;
+    border-radius: 35%;
+}
+
+.webChat-menuItem-item-remove {
+    font-size: xx-small;
+    /** font-variant: all-petite-caps; **/
+    border-radius: 50%;
+    background: #bdc3c7;
+    text-align: center;
+    width: 16px;
+    height: 16px;
+    align-self: center;
+    justify-self: end;
+    color: white;
+    display: none;
+    transition: .35s;
+}
+
+.webChat-menuItem-item:hover .webChat-menuItem-item-remove {
+    display: block;
+    transition: .35s;
+}
+
+.webChat-menuItem-item-remove:hover {
+    background: red;
+    font-size: xx-small;
+}
+
+.icon-webChat-menu-group-up {
+    background: url('/Css/Images/up.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-webChat-menu-group-down {
+    background: url('/Css/Images/down.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-webchat {
+    background: url('/Css/Images/webchat.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-btn-max {
+    background: url('/Css/Images/max.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-btn-min {
+    background: url('/Css/Images/mini.png') no-repeat center center;
+    background-size: contain;
+}
+
+.icon-btn-reset {
+    background: url('/Css/Images/reset.png') no-repeat center center;
+    background-size: contain;
+}
+
+.webChat-userPanel-senmessage-button {
+    border-style: ridge;
+    border-width: 1px;
+    border-color: lightslategray;
+    background-color: lightslategray;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #ecf0f1;
+    transition: .15s;
+    cursor: pointer;
+}
+
+.webChat-userPanel-senmessage-button:hover {
+    border-color: rgb(108, 121, 134);
+    background-color: rgb(108, 121, 134);
+}

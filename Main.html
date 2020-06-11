@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/icon.css" />
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" href="Css/webChat.css" />
+
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.easyui.min.js"></script>
+
+    <script type="text/javascript" src="/JavaScripts/Knockout.3.5.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/MenuItem.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatPanel.js"></script>
+    <script type="text/javascript" src="/JavaScripts/WebChat/ChatBadge.js"></script>
+
+</head>
+
+<body>
+    <ul id="datalist" class="easyui-datalist" title="" style="width:400px;height:250px">
+        <li value="AL">Alabama</li>
+        <li value="AK">Alaska</li>
+        <li value="AZ">Arizona</li>
+        <li value="AR">Arkansas</li>
+        <li value="CA">California</li>
+        <li value="CO">Colorado</li>
+    </ul>
+
+    <div id="menumItem"></div>
+    <div id="menumItem2"></div>
+
+    <div id="chatMessageHistory"></div>
+
+    <div style="width: 60px; height: 60px;">
+        <div>
+            这里有好多的内容
+            <span id="chatBadge">4</span>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function() {
+            var cardview = $.extend({}, $.fn.datagrid.defaults.view, {
+                renderRow: function(target, fields, frozen, rowIndex, rowData) {
+                    console.log(target);
+                    var cc = [];
+                    cc.push('<td colspan=' + fields.length + ' style="padding:50px 5px;border:0;">');
+                    if (!frozen && rowData.itemid) {
+                        var aa = rowData.itemid.split('-');
+                        var img = 'shirt' + aa[1] + '.gif';
+                        cc.push('<img src="images/' + img + '" style="width:150px;float:left">');
+                        cc.push('<div style="float:left;margin-left:20px;">');
+                        for (var i = 0; i < fields.length; i++) {
+                            var copts = $(target).datagrid('getColumnOption', fields[i]);
+                            cc.push('<p><span class="c-label">' + copts.title + ':</span> ' + rowData[fields[i]] + '</p>');
+                        }
+                        cc.push('</div>');
+                    }
+                    cc.push('</td>');
+                    return cc.join('');
+                }
+            });
+            $(function() {
+                $('#datalist').datalist({
+                    view: cardview
+                });
+            });
+
+            var data = [{
+                id: "1",
+                text: "test1",
+                group: "gp1",
+                image: "",
+                badgeValue: 2,
+                history: {
+                    message: "是劳动法我莱克斯顿金佛山"
+                },
+            }, {
+                id: "2",
+                text: "test2",
+                group: "gp1",
+                image: "",
+                badgeValue: 3,
+                history: {
+                    message: "是劳动法我莱克斯水电费问顿金佛山"
+                },
+            }, {
+                id: "3",
+                text: "test3",
+                group: "gp2",
+                image: "",
+                badgeValue: 0,
+                history: {
+                    message: "是劳动法我水电费问莱克斯顿金佛山"
+                },
+            }, {
+                id: "4",
+                text: "test4",
+                group: "gp2",
+                image: "",
+                badgeValue: 0,
+                history: {
+                    message: "是劳动法我莱克斯顿金佛山123"
+                },
+            }, {
+                id: "5",
+                text: "test5",
+                group: "",
+                image: "",
+                badgeValue: 2,
+                history: {
+                    message: "是劳动法我莱克斯顿金佛山5"
+                },
+            }];
+
+            $("#menumItem").webChatMenuItem({
+                removeItemButton: false,
+                data: data
+            });
+            $("#menumItem2").webChatMenuItem({
+                groupField: "",
+                data: data
+            });
+
+            var chatMessages = [{
+                messageType: "peer",
+                messageDateTime: "2020-04-23 14:35:52",
+                message: "你好！",
+                sendBy: "",
+                receiveGuid: ""
+            }, {
+                messageType: "me",
+                messageDateTime: "2020-04-23 14:36:32",
+                message: "你好！请问有什么可以帮到你的吗？",
+                sendBy: "",
+                receiveGuid: ""
+            }, {
+                messageType: "peer",
+                messageDateTime: "2020-04-23 14:36:38",
+                message: "没事",
+                sendBy: "",
+                receiveGuid: ""
+            }, {
+                messageType: "peer",
+                messageDateTime: "2020-04-23 14:36:52",
+                message: "有点无聊，想找人聊下天",
+                sendBy: "",
+                receiveGuid: ""
+            }];
+
+            $("#chatMessageHistory").webChatChatPanel({});
+            $("#chatMessageHistory").webChatChatPanel("initChatMessage", chatMessages);
+
+            setTimeout(function() {
+                $("#chatMessageHistory").webChatChatPanel("addNewMessage", {
+                    messageStatus: "Sended",
+                    messageDateTime: new Date(),
+                    message: "莱克斯顿佛是否老是扣打飞机欧文富了谁看得见佛业务发",
+                });
+            }, 2000);
+
+            $("#chatBadge").webChatBadge({
+                value: 8,
+                enable: true
+            });
+        });
+    </script>
+</body>
+
+</html>

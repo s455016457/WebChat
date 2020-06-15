@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/icon.css" />
+    <link rel="stylesheet" href="Css/jquery-easyui/themes/default/easyui.css" />
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/JavaScripts/jquery-easyui/jquery.easyui.min.js"></script>
+
+    <style type="text/css">
+        .showMessageBox {
+            width: 250px;
+            height: 150px;
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+        
+        .showMessageBox button {
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <code xml="javascript">
+            $.messager.show
+        </code>
+        <div class="showMessageBox">
+            <button>左上</button>
+            <button>中上</button>
+            <button>右上</button>
+            <button>左中</button>
+            <button>中</button>
+            <button>右中</button>
+            <button>左下</button>
+            <button>中下</button>
+            <button>右下</button>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function() {
+            $("button", $(".showMessageBox")).on("click", function(event) {
+                switch ($(this).text()) {
+                    case "左上":
+                        $.messager.show({
+                            msg: 'The message content',
+                            showType: 'show',
+                            style: {
+                                right: '',
+                                left: 0,
+                                top: document.body.scrollTop + document.documentElement.scrollTop,
+                                bottom: '',
+                                border: 'none',
+                                background: "#34495e",
+                                textAlign: "center",
+                            }
+                        });
+                        break;
+                    case "中上":
+                        $.messager.show({
+                            title: 'My Title',
+                            msg: 'The message content',
+                            showType: 'slide',
+                            timeout: 0,
+                            width: 260,
+                            height: 130,
+                            style: {
+                                right: '',
+                                top: document.body.scrollTop + document.documentElement.scrollTop,
+                                bottom: '',
+                                background: "#34495e",
+                                textAlign: "center",
+                            }
+                        });
+                        break;
+                    case "右上":
+                        $.messager.show({
+                            msg: '<h4 style="margin:5px 0px">你有新的消息</h4><div>数量的看风景噢诶我</div>',
+                            showType: 'show',
+                            // title: '温馨提示',
+                            timeout: 10 * 1000,
+                            width: 200,
+                            height: 100,
+                            style: {
+                                left: '',
+                                right: 0,
+                                top: document.body.scrollTop + document.documentElement.scrollTop,
+                                bottom: '',
+                                border: 'none',
+                                background: "#34495e",
+                                color: "#ecf0f1",
+                                textAlign: "center",
+                            }
+                        });
+                        break;
+                    case "左中":
+                        $.messager.show({
+                            title: 'My Title',
+                            msg: 'The message content',
+                            showType: 'fade',
+                            style: {
+                                left: 0,
+                                right: '',
+                                bottom: ''
+                            }
+                        });
+                        break;
+                    case "中":
+                        $.messager.show({
+                            title: 'My Title',
+                            msg: 'The message content',
+                            showType: 'fade',
+                            style: {
+                                right: '',
+                                bottom: ''
+                            }
+                        });
+                        break;
+                    case "右中":
+                        $.messager.show({
+                            title: 'My Title',
+                            msg: 'The message content',
+                            showType: 'fade',
+                            style: {
+                                left: '',
+                                right: 0,
+                                bottom: ''
+                            }
+                        });
+                        break;
+                    case "左下":
+                        $.messager.show({
+                            title: 'My Title',
+                            msg: 'The message content',
+                            showType: 'show',
+                            style: {
+                                left: 0,
+                                right: '',
+                                top: '',
+                                bottom: -document.body.scrollTop - document.documentElement.scrollTop
+                            }
+                        });
+                        break;
+                    case "中下":
+                        $.messager.show({
+                            title: 'My Title',
+                            msg: 'The message content',
+                            showType: 'slide',
+                            style: {
+                                right: '',
+                                top: '',
+                                bottom: -document.body.scrollTop - document.documentElement.scrollTop
+                            }
+                        });
+                        break;
+                    case "右下":
+                        $.messager.show({
+                            title: 'My Title',
+                            msg: 'The message content',
+                            showType: 'show'
+                        });
+                        break;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

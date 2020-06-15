@@ -49,6 +49,7 @@
                 </div>
             </div>
         </div>`;
+        this.isOpen = false;
 
         this.totalBadge = ko.pureComputed(function() {
             var count = 0;
@@ -129,8 +130,8 @@
                 this.messageStatus = ko.observable(data.messageStatus || "Sending"); // 0 Sending 发送中   -1 SendFailed 发送失败   1 Sended 发送成功  2 Readed 已阅读
                 this.messageDateTime = data.messageDateTime;
                 this.message = data.message;
-                this.receiverUuserId = data.receiverUuserId;
-                this.receiverUuserName = data.receiverUuserName;
+                this.receiverUserId = data.receiverUserId;
+                this.receiverUserName = data.receiverUserName;
                 this.messageStatusDescr = ko.computed(function() {
                     switch (this.messageStatus()) {
                         case "Sending":
@@ -224,7 +225,7 @@
                     var me = this;
                     var messages = [];
                     self.chatMessages().forEach(function(item, index, array) {
-                        if ((item.sendBy === me.userId && item.messageType === "peer") || (item.receiverUuserId === me.userId && item.messageType === "me"))
+                        if ((item.sendBy === me.userId && item.messageType === "peer") || (item.receiverUserId === me.userId && item.messageType === "me"))
                             messages.push(item);
                     });
                     return messages;
@@ -313,11 +314,127 @@
          * 添加一条新消息
          */
         this.addNewMessage = function(data) {
-            if (data.messageType === "peer")
+            if (data.messageType === "peer") {
                 self.addChatUser(data.sendBy);
-            else
-                self.addChatUser(data.receiverUuserId);
+
+                if (!self.isOpen) {
+                    var context = $("<div>");
+
+                    $("<h5>")
+                        .css("margin", "5px 0px")
+                        .html(data.sendUserName)
+                        .appendTo(context);
+
+                    $("<div>")
+                        .text(data.message)
+                        .attr("title", "点击查看")
+                        .css("cursor", "pointer")
+                        .on("click", function() {
+                            self.openWindow();
+                            self.selectChatUser(data.sendBy);
+                            $(this).parents(".window-body").window("close");
+                            console.log(this);
+                        })
+                        .appendTo(context);
+
+                    console.log(context[0]);
+                    self.showMessageBox(context[0]);
+                }
+            } else
+                self.addChatUser(data.receiverUserId);
             self.chatMessages.push(self.parseMessage(data));
+        };
+
+        this.showMessageBox = function(message, title, style, position) {
+            title = title || "您有新消息";
+            position = position || "topRight";
+            style = $.extend({
+                background: "#34495e",
+                textAlign: "center",
+            }, style || {});
+
+            switch (position) {
+                case "topLeft":
+                    $.extend(style, {
+                        right: '',
+                        left: 0,
+                        top: document.body.scrollTop + document.documentElement.scrollTop
+                    });
+                    break;
+                case "topCenter":
+                    $.extend(style, {
+                        right: '',
+                        top: document.body.scrollTop + document.documentElement.scrollTop,
+                    });
+                    break;
+                case "topRight":
+                    $.extend(style, {
+                        left: '',
+                        right: 0,
+                        top: document.body.scrollTop + document.documentElement.scrollTop,
+                    });
+                    break;
+                case "centerLeft":
+                    $.extend(style, {
+                        left: 0,
+                        right: '',
+                    });
+                    break;
+                case "center":
+                    $.extend(style, {
+                        right: '',
+                    });
+                    break;
+                case "centerRight":
+                    $.extend(style, {
+                        left: '',
+                        right: 0,
+                    });
+                    break;
+                case "bottomLeft":
+                    $.extend(style, {
+                        left: 0,
+                        right: '',
+                        top: '',
+                        bottom: -document.body.scrollTop - document.documentElement.scrollTop
+                    });
+                    break;
+                case "bottomCenter":
+                    $.extend(style, {
+                        right: '',
+                        top: '',
+                        bottom: -document.body.scrollTop - document.documentElement.scrollTop
+                    });
+                    break;
+                case "bottomRight":
+                    $.extend(style, {});
+                    break;
+            }
+
+            $.messager.show({
+                title: title,
+                msg: message,
+                width: 260,
+                height: 130,
+                showType: 'slide',
+                style: style
+            });
+        };
+
+        this.openWindow = function() {
+            self.webChatButton.click();
+        };
+
+        this.selectChatUser = function(userId) {
+            var buttonViewModel = self.winTitileButtons().findItem(function(item) {
+                return item.panelType === "chatMessage";
+            });
+            if (buttonViewModel) {
+                if (buttonViewModel.selected)
+                    buttonViewModel.selected();
+                if (buttonViewModel.selectedUser)
+                    buttonViewModel.selectedUser(userId);
+            }
         };
 
         /***
@@ -368,7 +485,6 @@
          * 初始化
          */
         function init(data) {
-
             /**
              * observableArray 延时通知
              * 定义更新通知评率不小于200毫秒
@@ -431,7 +547,8 @@
             .addClass("chat-window-icon-button-badge")
             .appendTo(div);
 
-        state.window = options.viewModel.html = $("<div>").appendTo($("body"));
+        state.webChatButton = options.viewModel.webChatButton = $(target);
+        state.window = options.viewModel.windowHtml = $("<div>").appendTo($("body"));
 
         $(options.viewModel.template).appendTo(state.window);
 
@@ -448,6 +565,7 @@
             state.window.window("open");
             options.badge = 0;
             badge.text(options.badge || "");
+            options.viewModel.isOpen = true;
         });
 
         $(".btn[name='max']", ".chat-window-title", winPanel).on("click",
@@ -467,6 +585,7 @@
 
         $(".btn[name='min']", ".chat-window-title", winPanel).on("click", function() {
             state.window.window("close");
+            state.options.viewModel.isOpen = false;
         });
 
 
@@ -652,12 +771,13 @@
                         this.onClickSendMessage = function(data, event) {
                             viewModel.addChatUser(data.userId);
                             setTimeout(() => {
-                                var buttonViewModel = viewModel.winTitileButtons().findItem(function(item) {
-                                    return item.panelType === "chatMessage";
-                                });
+                                viewModel.selectChatUser(data.userId);
+                                // var buttonViewModel = viewModel.winTitileButtons().findItem(function(item) {
+                                //     return item.panelType === "chatMessage";
+                                // });
 
-                                buttonViewModel.selected();
-                                buttonViewModel.selectedUser(data.userId);
+                                // buttonViewModel.selected();
+                                // buttonViewModel.selectedUser(data.userId);
 
                                 $(".webChat-menuItem-item-selected", $(event.currentTarget).parents(".layout-panel-center").prev(".layout-panel-west"))
                                     .removeClass("webChat-menuItem-item-selected");
@@ -808,19 +928,19 @@
 
     $.fn.webChat.methods = {
         options: function(jq) {
-            return $(jq).data("wetChat").options;
+            return $(jq).data("webChat").options;
         },
         maxOrRestore: function(jq) {
-            $(".btn[name='max']", $(".chat-window-title"), $(jq).data("wetChat").window).click();
+            $(".btn[name='max']", $(".chat-window-title"), $(jq).data("webChat").window).click();
         },
         min: function(jq) {
-            $(".btn[name='min']", $(".chat-window-title"), $(jq).data("wetChat").window).click();
+            $(".btn[name='min']", $(".chat-window-title"), $(jq).data("webChat").window).click();
         },
         window: function(jq) {
-            return $(jq).data(wetChat).window;
+            return $(jq).data("webChat").window;
         },
         winPanel: function(jq) {
-            return $(jq).wetChat("window").window("panel");
+            return $(jq).webChat("window").window("panel");
         },
     };
 
